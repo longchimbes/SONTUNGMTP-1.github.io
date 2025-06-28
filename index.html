@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bức Thư Tình Yêu</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Global styles to ensure full screen coverage for centering */
+        html, body {
+            height: 100%; /* Make html and body take full height of the viewport */
+            width: 100%;  /* Make html and body take full width of the viewport */
+            margin: 0;    /* Remove default browser margin */
+            padding: 0;   /* Remove default browser padding */
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            /* Flexbox properties to center the content horizontally and vertically */
+            @apply flex justify-center items-center;
+            overflow: hidden; /* Prevent scrollbar during animation, important for mobile */
+            position: relative; /* Needed for absolute positioning of falling particles */
+
+            /* Main background styles: Dior Addict Lipstick #667 Diormania inspired */
+            background-color: #8D2C4D; /* Main background color similar to Dior Addict #667 Diormania (deep berry/rose) */
+            background-image:
+                /* Slightly darker dot layer */
+                radial-gradient(circle at 20% 30%, rgba(160, 40, 70, 0.7) 1px, transparent 1px),
+                /* Lighter dot layer */
+                radial-gradient(circle at 70% 80%, rgba(180, 50, 80, 0.6) 1.5px, transparent 1.5px),
+                /* Medium dot layer */
+                radial-gradient(circle at 40% 60%, rgba(140, 30, 60, 0.5) 2px, transparent 2px),
+                /* More scattered, brightest dots */
+                radial-gradient(circle at 90% 10%, rgba(200, 60, 90, 0.8) 0.8px, transparent 0.8px),
+                radial-gradient(circle at 10% 90%, rgba(150, 35, 65, 0.7) 1.2px, transparent 1.2px);
+
+            background-size:
+                50px 50px,   /* Grid size for layer 1 */
+                70px 70px,   /* Grid size for layer 2 */
+                90px 90px,   /* Grid size for layer 3 */
+                120px 120px, /* Grid size for layer 4 */
+                100px 100px; /* Grid size for layer 5 */
+            background-position:
+                0 0, 25px 25px, 50px 50px, 10px 60px, 80px 30px; /* Adjust starting positions for random effect */
+            background-repeat: repeat; /* Repeat background image */
+            
+            /* Animation for subtle star background movement */
+            animation: animateStarBackground 40s linear infinite;
+        }
+
+        @keyframes animateStarBackground {
+            from {
+                background-position: 0 0, 25px 25px, 50px 50px, 10px 60px, 80px 30px;
+            }
+            to {
+                background-position: 50px 50px, 75px 75px, 100px 100px, 60px 110px, 130px 80px;
+            }
+        }
+
+        /* --- Falling Particles Effect --- */
+        .falling-particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; /* Allows clicks to pass through to the envelope */
+            z-index: 10; /* Ensure particles are on top of the background */
+            background-image:
+                /* Smallest, brightest particles */
+                radial-gradient(circle, rgba(255, 255, 255, 0.9) 1px, transparent 1px),
+                /* Medium size, slightly less bright */
+                radial-gradient(circle, rgba(255, 240, 230, 0.8) 1.5px, transparent 1.5px),
+                /* Larger, soft particles */
+                radial-gradient(circle, rgba(255, 220, 200, 0.7) 2px, transparent 2px);
+            
+            background-size: 50px 50px, 80px 80px, 120px 120px; /* Grid size for particle distribution */
+            animation: fallAndReset 15s linear infinite; /* Animation for falling effect */
+        }
+
+        @keyframes fallAndReset {
+            from {
+                background-position: 0 0, 40px 60px, 80px 20px; /* Initial positions */
+            }
+            to {
+                background-position: 0 100vh, 40px calc(100vh + 60px), 80px calc(100vh + 20px); /* Move down by 100vh */
+            }
+        }
+        
+        /* Custom styles for the envelope and letter animation */
+        .envelope-container {
+            /* Positioning and sizing for the main envelope container */
+            @apply relative cursor-pointer rounded-xl shadow-2xl overflow-hidden;
+            width: 350px; /* Adjusted width for the envelope (from 320px) */
+            height: 280px; /* Adjusted height for the envelope (from 220px) */
+            z-index: 20; /* Ensure envelope is above falling particles */
+            
+            /* CSS transitions for opening effect */
+            transition: transform 1s ease-in-out, background-color 0.5s, box-shadow 0.8s ease-in-out;
+            transform-style: preserve-3d; /* Essential for 3D rotation */
+            perspective: 1000px; /* Sets the perspective for 3D transformations */
+            
+            /* Visual styling for the outer envelope: Dior Addict Lip Glow #004 Coral inspired */
+            background-color: #FF7F50; /* Base color for #004 Coral - a vibrant coral */
+            border: 2px solid #FF6347; /* Slightly darker/redder coral for border */
+            
+            /* Initial box-shadow (subtle, non-glowing) */
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25), 0 0 5px rgba(255, 255, 255, 0.3); 
+            animation: pulsateGlow 3s ease-in-out infinite alternate; /* Pulsating glow animation */
+        }
+        
+        /* Keyframes for pulsating glow effect */
+        @keyframes pulsateGlow {
+            0% {
+                box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25), 0 0 5px rgba(255, 255, 255, 0.3);
+            }
+            50% {
+                box-shadow: 0 15px 30px rgba(0, 0, 0, 0.35), 0 0 25px rgba(255, 200, 180, 0.8); /* Stronger glow */
+            }
+            100% {
+                box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25), 0 0 5px rgba(255, 255, 255, 0.3);
+            }
+        }
+
+        /* State when the envelope is open */
+        .envelope-container.open {
+            transform: rotateX(20deg) scale(1.05); /* Rotate and slightly scale up when open */
+        }
+        
+        /* Styling for the envelope flap */
+        .flap {
+            @apply absolute top-0 left-0 w-full;
+            height: 140px; /* Adjusted height to be half of the new envelope height (from 110px) */
+            background-color: #FF8C69; /* A slightly different coral shade for the flap */
+            transform-origin: top; /* Pivot point for rotation */
+            transition: transform 0.8s ease-in-out; /* Smooth flap opening animation */
+            border-bottom-left-radius: 10px; /* Match envelope border-radius */
+            border-bottom-right-radius: 10px;
+            z-index: 2; /* Ensures flap is above the letter */
+            clip-path: polygon(0 0, 100% 0, 50% 100%); /* Creates the triangle shape for the flap */
+        }
+        
+        /* State when the flap is open */
+        .envelope-container.open .flap {
+            transform: rotateX(180deg); /* Flap rotates 180 degrees to reveal letter */
+            background-color: #FA8072; /* Even darker coral when open for depth */
+        }
+        
+        /* Styling for the letter paper inside */
+        .letter-paper {
+            /* Apply absolute positioning and Tailwind classes for layout and styling */
+            @apply absolute rounded-md shadow-lg p-6 flex flex-col justify-center items-center text-center text-gray-800;
+            width: calc(100% - 40px); /* Adjust width for padding */
+            height: calc(100% - 40px); /* Adjust height for padding */
+            top: 20px; /* Position inside envelope with padding */
+            left: 20px; /* Position inside envelope with padding */
+            opacity: 0; /* Hidden initially */
+            transform: translateY(60px) scale(0.7); /* Starts lower and smaller, then moves up and scales */
+            transition: opacity 0.9s ease-out, transform 0.9s ease-out; /* Smooth transition for letter appearance */
+            z-index: 1; /* Ensures letter is below flap */
+            line-height: 1.6; /* Improved readability for text */
+            letter-spacing: 0.02em; /* Slightly wider letter spacing */
+
+            /* Background color for the letter: Dior Addict Lip Glow #012 Rosewood inspired */
+            background-color: #F2D5CE; /* Light, warm rosy brown/pink tone for the letter */
+        }
+        
+        /* State when the letter is revealed */
+        .envelope-container.open .letter-paper {
+            opacity: 1; /* Fully visible */
+            transform: translateY(0) scale(1); /* Returns to original position and size */
+        }
+        
+        /* Typography for the letter content */
+        .letter-title {
+            @apply text-2xl font-bold text-red-700 mb-4; /* Deeper red for title */
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1); /* Subtle text shadow for depth */
+        }
+        .message-content {
+            @apply text-lg mb-6; /* Larger font size for the main message */
+        }
+        .signature {
+            @apply text-base italic text-gray-600 mt-4; /* Styling for the signature */
+        }
+        
+        /* Custom Message Box for alerts (replaces alert() function) */
+        .message-box {
+            @apply fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50;
+        }
+        .message-box-content {
+            @apply bg-white p-8 rounded-lg shadow-xl text-center max-w-sm mx-auto;
+        }
+        .message-box-content button {
+            @apply mt-6 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200;
+        }
+    </style>
+</head>
+<body>
+    <!-- Falling Particles Overlay -->
+    <div class="falling-particles"></div>
+
+    <!-- Main container for the envelope, centered by body's flexbox properties -->
+    <div class="envelope-container" onclick="openEnvelope()">
+        <div class="flap"></div>
+        <div class="letter-paper">
+            <h2 class="letter-title">Lời Nhắn Từ Baek Hyun-Woo!</h2>
+            <p id="messageContent" class="message-content">
+                Chào bạn! Đây là một lời nhắn đặc biệt dành riêng cho bạn. Cảm ơn bạn đã ghé thăm và mở bức thư này. Hy vọng lời nhắn này sẽ mang lại niềm vui cho bạn!
+            </p>
+            <p class="signature">
+                Thân gửi,<br>
+                Hong Hae-In
+
+            </p>
+        </div>
+    </div>
+
+    <!-- Message Box Element - hidden by default -->
+    <div id="messageBox" class="message-box hidden">
+        <div class="message-box-content">
+            <p id="messageBoxText" class="text-lg text-gray-800"></p>
+            <button onclick="hideMessageBox()">Đóng</button>
+        </div>
+    </div>
+
+    <script>
+        // Function to show a custom message box instead of alert()
+        function showMessageBox(message) {
+            const messageBox = document.getElementById('messageBox');
+            const messageBoxText = document.getElementById('messageBoxText');
+            messageBoxText.innerText = message;
+            messageBox.classList.remove('hidden');
+        }
+
+        // Function to hide the custom message box
+        function hideMessageBox() {
+            const messageBox = document.getElementById('messageBox');
+            messageBox.classList.add('hidden');
+        }
+
+        // Function to handle opening the envelope
+        function openEnvelope() {
+            const envelope = document.querySelector('.envelope-container');
+            // Prevent opening if already open
+            if (envelope.classList.contains('open')) {
+                return;
+            }
+            envelope.classList.add('open');
+
+            // Optional: Add a slight vibration for mobile devices (if supported)
+            if (navigator.vibrate) {
+                navigator.vibrate(50); // Vibrate for 50ms
+            }
+
+            // Optional: show a "thank you" message after animation completes
+            // setTimeout(() => {
+            //     showMessageBox("Cảm ơn bạn đã mở bức thư!");
+            // }, 1200); 
+        }
+
+        // Function to update the message content dynamically
+        function updateMessage(newMessage) {
+            const messageElement = document.getElementById('messageContent');
+            if (messageElement) {
+                messageElement.innerText = newMessage;
+            }
+        }
+
+        // Event listener: When the window loads, check for URL parameters
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const messageFromUrl = urlParams.get('message');
+            const senderFromUrl = urlParams.get('sender');
+
+            if (messageFromUrl) {
+                // Decode the URL-encoded message before updating
+                updateMessage(decodeURIComponent(messageFromUrl));
+            }
+
+            if (senderFromUrl) {
+                // Update the sender's name if provided in the URL
+                const signatureElement = document.querySelector('.signature');
+                if (signatureElement) {
+                    signatureElement.innerHTML = `Thân gửi,<br>${decodeURIComponent(senderFromUrl)}`;
+                }
+            }
+
+            // Example of how to use showMessageBox if needed for initial instruction
+            // showMessageBox("Chạm vào phong bì để mở bức thư!");
+        };
+    </script>
+</body>
+</html>
